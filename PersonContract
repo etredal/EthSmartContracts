@@ -1,0 +1,33 @@
+pragma solidity 0.5.1;
+
+contract MyContract {
+    mapping(uint => Person) public people;
+    
+    uint256 public peopleCount;
+    
+    address owner;
+ 
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+    
+    struct Person {
+        uint _id;
+        string _fistName;
+        string _lastName;
+    }
+    
+    constructor() public {
+        owner = msg.sender;
+    }
+    
+    function addPerson(string memory _firstName, string memory _lastName) public onlyOwner {
+        incrementCount();
+        people[peopleCount] = Person(peopleCount, _firstName, _lastName);
+    }
+    
+    function incrementCount() internal {
+        peopleCount += 1;
+    }
+}
